@@ -5,11 +5,11 @@ import {
     TouchableOpacity,
     Text,
     AsyncStorage,
+    FlatList,
 } from 'react-native';
 import Preloader from '../../components/preloader';
 import {inputWrapper, cityListItem, inputStyle} from '../../constants/styles';
 import {debounce} from '../../utils';
-import {FlatList} from 'react-native-gesture-handler';
 import NavigationService from '../../NavigationService';
 const SuggestionsInput = ({setCurrentCity}) => {
     const [suggestions, setSuggestions] = useState([]);
