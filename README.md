@@ -32,7 +32,7 @@
 # Решение
 
 ![](ios_weather.gif)
-&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;
 <img src="android_weather.gif" width="429">
 
 Примерный алгоритм работы:<br/>
