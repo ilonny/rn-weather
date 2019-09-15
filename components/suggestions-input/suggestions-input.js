@@ -7,7 +7,7 @@ import {
     AsyncStorage,
 } from 'react-native';
 import Preloader from '../../components/preloader';
-import {inputWrapper, cityListItem} from '../../constants/styles';
+import {inputWrapper, cityListItem, inputStyle} from '../../constants/styles';
 import {debounce} from '../../utils';
 import {FlatList} from 'react-native-gesture-handler';
 import NavigationService from '../../NavigationService';
@@ -69,6 +69,7 @@ const SuggestionsInput = ({setCurrentCity}) => {
                 <TextInput
                     autoFocus={true}
                     onChangeText={debounce(text => getSuggestions(text), 200)}
+                    style={inputStyle}
                 />
             </View>
             {loading ? (
