@@ -9,7 +9,9 @@ import {
 } from '../../constants/styles';
 import {formatDate} from '../../utils';
 const CityWeather = ({city, forecast, fetchForecast}) => {
-    useEffect(() => {});
+    useEffect(() => {
+        onRefresh();
+    }, []);
     const [refreshing, setRefreshing] = useState(false);
     onRefresh = useCallback(() => {
         setRefreshing(true);

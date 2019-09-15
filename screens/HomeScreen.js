@@ -22,13 +22,8 @@ const HomeScreen = ({
     fetchForecast,
 }) => {
     const [loading, setLoading] = useState(true);
-    // const didBlurSubscription = navigation.addListener(
-    //     'didFocus',
-    //     payload => {
-    //       detectCity();
-    //     }
-    //   );
     const detectCity = (force = false) => {
+        console.log('detect city fired');
         // AsyncStorage.clear();
         AsyncStorage.getItem('chosen_city', (err, value) => {
             if (!value || force) {
@@ -73,13 +68,16 @@ const HomeScreen = ({
                                         'Не удалось определить ваше местоположение',
                                     );
                                     setLoading(false);
-                                    navigator.navigate('Search');
+                                    navigation.navigate('Search');
                                 }
                             });
                     },
                     //по геолокации не получилось, отправляем искать руками
                     err => {
-                        navigator.navigate('Search');
+                        Alert.alert(
+                            'Не удалось определить ваше местоположение',
+                        );
+                        navigation.navigate('Search');
                     },
                 );
                 //на устройстве уже выбран город
@@ -93,6 +91,11 @@ const HomeScreen = ({
         navigation.setParams({detectCity: () => detectCity(true)});
         detectCity();
     }, []);
+    useEffect(() => {
+        if (forecast) {
+            setLoading(false);
+        }
+    });
     return (
         <SafeAreaView style={pageContainer}>
             {loading ? (
