@@ -32,7 +32,8 @@
 # Решение
 
 ![](ios_weather.gif)
-![](android_weather.gif)
+&nbsp;&nbsp;&nbsp;
+<img src="android_weather.gif" width="429">
 
 Примерный алгоритм работы:<br/>
 При запуске приложение проверяет был ли сохранен город в Async Storage, если был, то погоду отображает для него, если нет,
