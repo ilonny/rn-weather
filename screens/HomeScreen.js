@@ -7,7 +7,11 @@ import {
     AsyncStorage,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {selectCurrentCity, selectForecast} from '../store/selectors';
+import {
+    selectCurrentCity,
+    selectForecast,
+    selectUpdateTime,
+} from '../store/selectors';
 import CityWeather from '../components/city-weather';
 import {pageContainer} from '../constants/styles';
 import Geolocation from '@react-native-community/geolocation';
@@ -20,6 +24,7 @@ const HomeScreen = ({
     setCurrentCity,
     forecast,
     fetchForecast,
+    updateTime,
 }) => {
     const [loading, setLoading] = useState(true);
     const detectCity = (force = false) => {
@@ -105,6 +110,7 @@ const HomeScreen = ({
                     city={currentCity}
                     forecast={forecast}
                     fetchForecast={fetchForecast}
+                    updateTime={updateTime}
                 />
             )}
         </SafeAreaView>
@@ -131,9 +137,9 @@ HomeScreen.navigationOptions = ({navigation}) => {
 };
 export default connect(
     state => ({
-        // currentCity: selectCurrentCity(state),
-        currentCity: state.currentCity,
+        currentCity: selectCurrentCity(state),
         forecast: selectForecast(state),
+        updateTime: selectUpdateTime(state),
     }),
     dispatch => ({
         setCurrentCity: city => dispatch(setCurrentCityAction(city)),

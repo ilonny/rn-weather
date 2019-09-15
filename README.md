@@ -31,5 +31,5 @@
 
 # Решение
 
-ios:
+ios:<br/>
 ![](ios_weather.gif)

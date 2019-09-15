@@ -3,6 +3,7 @@ import {SET_CURRENT_CITY, SET_FORECAST} from '../constants/action_types';
 const initialState = {
     currentCity: '',
     forecast: '',
+    updateTime: '',
 };
 
 export default (state = initialState, action) => {
@@ -16,6 +17,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 forecast: action.res,
+                updateTime: Date.now(),
             };
         default:
             return state;

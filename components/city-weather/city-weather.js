@@ -8,7 +8,7 @@ import {
     forecastItemRow,
 } from '../../constants/styles';
 import {formatDate} from '../../utils';
-const CityWeather = ({city, forecast, fetchForecast}) => {
+const CityWeather = ({city, forecast, fetchForecast, updateTime}) => {
     useEffect(() => {
         onRefresh();
     }, []);
@@ -51,6 +51,9 @@ const CityWeather = ({city, forecast, fetchForecast}) => {
         <Fragment>
             <View>
                 <Text style={weatherTitle}>Погода в г. {city}</Text>
+                <Text style={{textAlign: 'center'}}>
+                    Обновлено {formatDate(updateTime / 1000)}
+                </Text>
             </View>
             {forecast.cod != 404 ? (
                 <FlatList
