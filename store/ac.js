@@ -6,6 +6,7 @@ export const setCurrentCityAction = city => (dispatch, getState) => {
         type: SET_CURRENT_CITY,
         city,
     });
+    console.log('current city dispatched;', city);
     if (city != state.currentCity) {
         dispatch(fetchForecast(city));
     }
@@ -15,6 +16,7 @@ export const fetchForecast = city => dispatch => {
     console.log(
         `http://api.openweathermap.org/data/2.5/forecast?q=${city},ru&APPID=ea701ad7a826a310d73e33f9d1c3083d&lang=ru&units=metric`,
     );
+    console.log('city fetchind', city);
     fetch(
         `http://api.openweathermap.org/data/2.5/forecast?q=${city},ru&APPID=ea701ad7a826a310d73e33f9d1c3083d&lang=ru&units=metric`,
     )
@@ -27,7 +29,9 @@ export const fetchForecast = city => dispatch => {
                 });
             } else {
                 console.log('//пробуем другое api..');
-                console.log(`https://community-open-weather-map.p.rapidapi.com/forecast?q=surgut%2Cru&lang=ru&units=metric`);
+                console.log(
+                    `https://community-open-weather-map.p.rapidapi.com/forecast?q=surgut%2Cru&lang=ru&units=metric`,
+                );
                 fetch(
                     `https://community-open-weather-map.p.rapidapi.com/forecast?q=surgut%2Cru&lang=ru&units=metric`,
                     {

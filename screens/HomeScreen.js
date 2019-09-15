@@ -25,31 +25,23 @@ const HomeScreen = ({
     // const didBlurSubscription = navigation.addListener(
     //     'didFocus',
     //     payload => {
-    //         console.log('will focus')
     //       detectCity();
     //     }
     //   );
     const detectCity = (force = false) => {
         // AsyncStorage.clear();
-        console.log('detect city fired', force);
         AsyncStorage.getItem('chosen_city', (err, value) => {
-            console.log('chosen_city', value);
             if (!value || force) {
                 //если не было сохранено города, попробуем определить по геолокации
                 Geolocation.getCurrentPosition(
                     pos => {
                         const {latitude, longitude} = pos.coords;
-                        console.log(
-                            'fetch url',
-                            `https://locationiq.com/v1/reverse_sandbox.php?format=json&lat=${latitude}&lon=${longitude}&accept-language=en`,
-                        );
                         fetch(
                             `https://locationiq.com/v1/reverse_sandbox.php?format=json&lat=${latitude}&lon=${longitude}&accept-language=en`,
                         )
                             .then(res => res.json())
                             .then(res => {
                                 const {city} = res.address;
-                                console.log('city', city);
                                 if (city) {
                                     Alert.alert(
                                         `Is your city of ${city}?`,
@@ -100,7 +92,7 @@ const HomeScreen = ({
     useEffect(() => {
         navigation.setParams({detectCity: () => detectCity(true)});
         detectCity();
-    },[]);
+    }, []);
     return (
         <SafeAreaView style={pageContainer}>
             {loading ? (
@@ -136,7 +128,8 @@ HomeScreen.navigationOptions = ({navigation}) => {
 };
 export default connect(
     state => ({
-        currentCity: selectCurrentCity(state),
+        // currentCity: selectCurrentCity(state),
+        currentCity: state.currentCity,
         forecast: selectForecast(state),
     }),
     dispatch => ({

@@ -15,7 +15,6 @@ const SuggestionsInput = ({setCurrentCity}) => {
     const [suggestions, setSuggestions] = useState([]);
     const [loading, setLoading] = useState(false);
     const getSuggestions = val => {
-        console.log('getSuggestions', val);
         setLoading(true);
         fetch(
             `https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address?`,
@@ -37,16 +36,16 @@ const SuggestionsInput = ({setCurrentCity}) => {
         )
             .then(res => res.json())
             .then(res => {
-                setSuggestions(res.suggestions.map(city => city.data.city));
+                setSuggestions(
+                    res.suggestions.map(city => ({
+                        value: city.data.city,
+                        f_id: city.data.city_fias_id,
+                    })),
+                );
                 setLoading(false);
             });
     };
-    useEffect(() => {
-        console.log('sugg', suggestions);
-        console.log('setCurrentCity', setCurrentCity);
-    });
     const handlePressCity = city => {
-        console.log('handlePressCity', city);
         AsyncStorage.setItem('chosen_city', city).then(() => {
             setCurrentCity(city);
             NavigationService.navigate('Home');
@@ -55,14 +54,15 @@ const SuggestionsInput = ({setCurrentCity}) => {
     const renderItem = ({item}) => (
         <TouchableOpacity
             onPress={() => {
-                handlePressCity(item);
-            }}
-            key={item}>
+                handlePressCity(item.value);
+            }}>
             <View style={cityListItem}>
-                <Text>{item}</Text>
+                <Text>{item.value}</Text>
             </View>
         </TouchableOpacity>
     );
+    //тут могут попадаться города с одинаковым началом названия, поэтому могут возникнуть одинаковые ключи.. тк апи упрощенное
+    _keyExtractor = item => item.f_id;
     return (
         <Fragment>
             <View style={inputWrapper}>
@@ -74,7 +74,11 @@ const SuggestionsInput = ({setCurrentCity}) => {
             {loading ? (
                 <Preloader />
             ) : (
-                <FlatList data={suggestions} renderItem={renderItem} />
+                <FlatList
+                    data={suggestions}
+                    renderItem={renderItem}
+                    keyExtractor={_keyExtractor}
+                />
             )}
         </Fragment>
     );

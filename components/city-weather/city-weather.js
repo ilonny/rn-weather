@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useCallback, Fragment} from 'react';
-import {Text, View, ScrollView, FlatList} from 'react-native';
+import {Text, View, ScrollView, FlatList, AsyncStorage} from 'react-native';
 import Preloader from '../preloader';
 import {
     weatherTitle,
@@ -7,17 +7,17 @@ import {
     forecastItem,
     forecastItemRow,
 } from '../../constants/styles';
-import {formatDate} from "../../utils"
+import {formatDate} from '../../utils';
 const CityWeather = ({city, forecast, fetchForecast}) => {
-    useEffect(() => {
-        console.log('forecast', forecast);
-    });
+    useEffect(() => {});
     const [refreshing, setRefreshing] = useState(false);
     onRefresh = useCallback(() => {
         setRefreshing(true);
         return new Promise(resolve => {
-            fetchForecast(city);
-            resolve();
+            AsyncStorage.getItem('chosen_city', (err, value) => {
+                fetchForecast(value);
+                resolve();
+            });
         }).then(() => setRefreshing(false));
     }, [refreshing]);
     const renderItem = ({item}) => {
@@ -44,7 +44,7 @@ const CityWeather = ({city, forecast, fetchForecast}) => {
             </View>
         );
     };
-    _keyExtractor = item => item.dt.toString();
+    _keyExtractor = item => item.dt.toString() + forecast.city.name;
     return forecast ? (
         <Fragment>
             <View>
@@ -52,13 +52,13 @@ const CityWeather = ({city, forecast, fetchForecast}) => {
             </View>
             {forecast.cod != 404 ? (
                 <FlatList
-                data={forecast.list}
-                renderItem={renderItem}
-                refreshing={refreshing}
-                onRefresh={onRefresh}
-                keyExtractor={_keyExtractor}
+                    data={forecast.list}
+                    renderItem={renderItem}
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    keyExtractor={_keyExtractor}
                 />
-            ): (
+            ) : (
                 <Text style={{textAlign: 'center'}}>Город не найден</Text>
             )}
         </Fragment>
